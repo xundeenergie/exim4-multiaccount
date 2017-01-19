@@ -1,2 +1,1 @@
-sender@tld:smtp.sender.tld:loginname:verysecurepasswd
-
+from.sender@email.tld:smtp.server:user.name:verysecretpassword
