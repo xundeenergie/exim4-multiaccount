@@ -1,0 +1,14 @@
+.ifdef DCconfig_smarthost DCconfig_satellite
+smarthost_multiaccount:
+  debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address"
+  driver = manualroute
+  domains = !+local_domains
+  transport = remote_smtp_smarthost_multiaccount
+  route_list = * ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/sender.smarthost.passwd}{$value}fail}}}
+  host_find_failed = defer
+  same_domain_copy_routing = yes
+  self = send
+##  condition = ${if !eq{${lc:$local_part}}{postmaster}{yes}{no}}
+##  condition = ${if !eq{${lc:$local_part}}{root}{yes}{no}}
+  no_more
+.endif
