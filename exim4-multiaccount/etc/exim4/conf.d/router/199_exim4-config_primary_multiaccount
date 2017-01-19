@@ -4,7 +4,7 @@ smarthost_multiaccount:
   driver = manualroute
   domains = !+local_domains
   transport = remote_smtp_smarthost_multiaccount
-  route_list = * ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/sender.smarthost.passwd}{$value}fail}}}
+  route_list = * ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}
   host_find_failed = defer
   same_domain_copy_routing = yes
   self = send
