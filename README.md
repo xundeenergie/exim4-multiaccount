@@ -5,10 +5,8 @@ Diese Konfiguration erweitert die Möglichkeiten von exim4, dass mehrere User au
 
 ## Installation
 * Dateien in die entsprechenden Verzeichnisse kopieren.
-* in /etc/exim4/sender.smarthost.passwd mit Doppelpunkt getrennt die Daten eintragen.
+* in /etc/exim4/sender.multismarthost_multiaccount.passwd mit Doppelpunkt getrennt die Daten eintragen.
 	absender.email@domain.tld:smtp.server.tld:login.name@domain.tld:verysecretpassword
 * sudo systemctl restart exim4.service 
 * /etc/email-addresses ergänzen
 * /etc/exim4/conf.d/auth/30_exim4-config_examples - zur Gänze auskommentieren 
-
-
