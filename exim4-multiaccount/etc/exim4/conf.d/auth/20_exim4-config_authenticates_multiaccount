@@ -1,0 +1,30 @@
+plain:
+  driver = plaintext
+  public_name = PLAIN
+  client_send = "^${extract{2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.smarthost.passwd}{$value}fail}}}\
+                 ^${extract{3}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.smarthost.passwd}{$value}fail}}}"
+#  server_condition = \
+#                ${if eq {${readsocket{/var/run/courier/authdaemon/socket}\
+#                {AUTH ${strlen:exim\nlogin\n$2\n$3\n}\nexim\nlogin\n$2\n$3\n}}}{FAIL\n}{no}{yes}}
+  server_set_id = $2
+  server_advertise_condition = ${if eq{$tls_cipher}{}{}{*}}
+
+login:
+  driver = plaintext
+  public_name = LOGIN
+  client_send = ": ${extract{2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.smarthost.passwd}{$value}fail}}} \
+                 : ${extract{3}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.smarthost.passwd}{$value}fail}}}"
+  server_prompts = Username:: : Password::
+#  server_condition = ${if eq {${readsocket{/var/run/courier/authdaemon/socket} \
+#                {AUTH ${strlen:exim\nlogin\n$1\n$2\n}\nexim\nlogin\n$1\n$2\n}}}{FAIL\n}{no}{yes}}
+  server_set_id = $1
+  server_advertise_condition = ${if eq{$tls_cipher}{}{}{*}}
+
+cram_md5:
+  driver = cram_md5
+  public_name = CRAM-MD5
+  client_name = ${extract{2}{:}{${lookup{$sender_address}lsearch{CONFDIR/sender.smarthost.passwd}{$value}fail}}}
+  client_secret = ${extract{3}{:}{${lookup{$sender_address}lsearch{CONFDIR/sender.smarthost.passwd}{$value}fail}}}
+
+
+

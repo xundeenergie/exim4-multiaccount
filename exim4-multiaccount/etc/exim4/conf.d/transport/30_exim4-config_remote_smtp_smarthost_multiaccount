@@ -1,0 +1,40 @@
+## Erweiterter Transport für Zustellung zu smarthosts, wenn auf dem selben Smarthost mehrere Mailaccounts und Aliases bestehen
+# Erweiterung von Jakobus Schürz
+#hosts_require_auth = *
+#hosts_require_tls = *
+
+remote_smtp_smarthost_multiaccount:
+  debug_print = "T: remote_smtp_list for $local_part@$domain an $sender_address"
+  driver = smtp
+  hosts_require_auth = ${extract{1}{:}{${lookup{$sender_address}lsearch{CONFDIR/sender.smarthost.passwd}{$value}fail}}}
+.ifdef REMOTE_SMTP_HOSTS_AVOID_TLS
+  hosts_avoid_tls = REMOTE_SMTP_HOSTS_AVOID_TLS
+.endif
+.ifdef REMOTE_SMTP_HEADERS_REWRITE
+  headers_rewrite = REMOTE_SMTP_HEADERS_REWRITE
+.endif
+.ifdef REMOTE_SMTP_RETURN_PATH
+  return_path = REMOTE_SMTP_RETURN_PATH
+.endif
+.ifdef REMOTE_SMTP_HELO_DATA
+  helo_data=REMOTE_SMTP_HELO_DATA
+.endif
+.ifdef DKIM_DOMAIN
+dkim_domain = DKIM_DOMAIN
+.endif
+.ifdef DKIM_SELECTOR
+dkim_selector = DKIM_SELECTOR
+.endif
+.ifdef DKIM_PRIVATE_KEY
+dkim_private_key = DKIM_PRIVATE_KEY
+.endif
+.ifdef DKIM_CANON
+dkim_canon = DKIM_CANON
+.endif
+.ifdef DKIM_STRICT
+dkim_strict = DKIM_STRICT
+.endif
+.ifdef DKIM_SIGN_HEADERS
+dkim_sign_headers = DKIM_SIGN_HEADERS
+.endif
+
