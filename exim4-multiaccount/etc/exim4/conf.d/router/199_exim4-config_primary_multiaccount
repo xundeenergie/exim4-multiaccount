@@ -1,6 +1,6 @@
 .ifdef DCconfig_smarthost DCconfig_satellite
 smarthost_multiaccount:
-  debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address"
+  debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address : $sender_ident"
   driver = manualroute
   domains = !+local_domains
   transport = remote_smtp_smarthost_multiaccount
