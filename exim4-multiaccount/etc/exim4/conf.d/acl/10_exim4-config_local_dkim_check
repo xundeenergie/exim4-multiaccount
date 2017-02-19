@@ -8,7 +8,8 @@ acl_check_dkim:
 
 
       # Deny invalid signatures
-      deny
+      #deny
+      defer
            dkim_status = invalid
            add_header = X-DKIM: $dkim_cur_signer ($dkim_verify_status); $dkim_verify_reason
            logwrite = DKIM test passed (address=$sender_address domain=$dkim_cur_signer), but signature is invalid.
