@@ -3,6 +3,7 @@ plain:
   public_name = PLAIN
   client_send = "^${extract{2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}\
                  ^${extract{3}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}"
+#  server_condition = ${if pam{$1:${sg{$2}{:}{::}}}{yes}{no}} 
 #  server_condition = \
 #                ${if eq {${readsocket{/var/run/courier/authdaemon/socket}\
 #                {AUTH ${strlen:exim\nlogin\n$2\n$3\n}\nexim\nlogin\n$2\n$3\n}}}{FAIL\n}{no}{yes}}
@@ -15,6 +16,7 @@ login:
   client_send = ": ${extract{2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}} \
                  : ${extract{3}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}"
   server_prompts = Username:: : Password::
+#  server_condition = ${if pam{$1:${sg{$2}{:}{::}}}{yes}{no}} 
 #  server_condition = ${if eq {${readsocket{/var/run/courier/authdaemon/socket} \
 #                {AUTH ${strlen:exim\nlogin\n$1\n$2\n}\nexim\nlogin\n$1\n$2\n}}}{FAIL\n}{no}{yes}}
   server_set_id = $1
