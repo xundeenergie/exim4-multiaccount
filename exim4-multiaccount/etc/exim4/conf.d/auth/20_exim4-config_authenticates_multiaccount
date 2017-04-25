@@ -3,6 +3,7 @@ plain:
   public_name = PLAIN
   client_send = "^${extract{2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}\
                  ^${extract{3}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}"
+#  client_condition = ${if ^${extract{2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}{yes}{no}}
 #  server_condition = ${if pam{$1:${sg{$2}{:}{::}}}{yes}{no}} 
 #  server_condition = \
 #                ${if eq {${readsocket{/var/run/courier/authdaemon/socket}\
