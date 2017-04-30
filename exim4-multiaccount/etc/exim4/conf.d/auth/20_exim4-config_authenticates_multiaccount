@@ -1,15 +1,12 @@
 plain:
   driver = plaintext
   public_name = PLAIN
+.ifndef AUTH_CLIENT_ALLOW_NOTLS_PASSWORDS
+  server_advertise_condition = ${if eq{$tls_cipher}{}{}{*}}
+.endif
   client_send = "^${extract{2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}\
                  ^${extract{3}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}"
-#  client_condition = ${if ^${extract{2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}{yes}{no}}
-#  server_condition = ${if pam{$1:${sg{$2}{:}{::}}}{yes}{no}} 
-#  server_condition = \
-#                ${if eq {${readsocket{/var/run/courier/authdaemon/socket}\
-#                {AUTH ${strlen:exim\nlogin\n$2\n$3\n}\nexim\nlogin\n$2\n$3\n}}}{FAIL\n}{no}{yes}}
   server_set_id = $2
-  server_advertise_condition = ${if eq{$tls_cipher}{}{}{*}}
 
 login:
   driver = plaintext
@@ -17,11 +14,10 @@ login:
   client_send = ": ${extract{2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}} \
                  : ${extract{3}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}"
   server_prompts = Username:: : Password::
-#  server_condition = ${if pam{$1:${sg{$2}{:}{::}}}{yes}{no}} 
-#  server_condition = ${if eq {${readsocket{/var/run/courier/authdaemon/socket} \
-#                {AUTH ${strlen:exim\nlogin\n$1\n$2\n}\nexim\nlogin\n$1\n$2\n}}}{FAIL\n}{no}{yes}}
   server_set_id = $1
+.ifndef AUTH_CLIENT_ALLOW_NOTLS_PASSWORDS
   server_advertise_condition = ${if eq{$tls_cipher}{}{}{*}}
+.endif
 
 cram_md5:
   driver = cram_md5

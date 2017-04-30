@@ -8,7 +8,7 @@ smarthost_multiaccount:
   host_find_failed = defer
   same_domain_copy_routing = yes
   self = send
-##  condition = ${if !eq{${lc:$local_part}}{postmaster}{yes}{no}}
-##  condition = ${if !eq{${lc:$local_part}}{root}{yes}{no}}
+  condition = ${if !eq{${lc:$local_part}}{postmaster}{yes}{no}}
+  condition = ${if !eq{${lc:$local_part}}{root}{yes}{no}}
   no_more
 .endif
