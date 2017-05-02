@@ -1,14 +1,18 @@
+## Erweiterung von Jakobus Schürz für multismarthost and multiaccounts
+
 .ifdef DCconfig_smarthost DCconfig_satellite
 smarthost_multiaccount:
-  debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address : $sender_ident"
+  debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address"
   driver = manualroute
   domains = !+local_domains
   transport = remote_smtp_smarthost_multiaccount
-  route_list = * ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}
+  route_list = * ${extract{-3}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
   host_find_failed = defer
   same_domain_copy_routing = yes
   self = send
-  condition = ${if !eq{${lc:$local_part}}{postmaster}{yes}{no}}
-  condition = ${if !eq{${lc:$local_part}}{root}{yes}{no}}
+  condition = ${extract{1}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}} \
+                        {${if eq{$value}{$auth2}{yes}} {false}}
+##  condition = ${if !eq{${lc:$local_part}}{postmaster}{yes}{no}}
+##  condition = ${if !eq{${lc:$local_part}}{root}{yes}{no}}
   no_more
 .endif

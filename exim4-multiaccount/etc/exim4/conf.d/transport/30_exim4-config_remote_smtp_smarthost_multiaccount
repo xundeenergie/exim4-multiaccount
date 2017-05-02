@@ -4,10 +4,9 @@
 #hosts_require_tls = *
 
 remote_smtp_smarthost_multiaccount:
-  debug_print = "T: remote_smtp_list for $local_part@$domain an $sender_address : $sender_ident"
+  debug_print = "T: remote_smtp_list for $local_part@$domain an $sender_address"
   driver = smtp
-  hosts_require_auth = ${extract{1}{:}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}
-  #hosts_require_auth = ${extract{1}{:}{${lookup{$sender_address}lsearch{CONFDIR/sender.$sender_ident.passwd}{$value}fail}}}
+  hosts_require_auth = ${extract{-3}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
 .ifdef REMOTE_SMTP_HOSTS_AVOID_TLS
   hosts_avoid_tls = REMOTE_SMTP_HOSTS_AVOID_TLS
 .endif
