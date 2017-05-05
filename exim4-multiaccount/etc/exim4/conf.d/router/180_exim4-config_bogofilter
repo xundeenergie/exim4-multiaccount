@@ -1,0 +1,14 @@
+# Bogofilter will add X-Bogosity header to all incoming mail.
+# This usually goes right after the dns_lookup router and
+# before any local deliver routers. Location is important!
+
+.ifdef USE_BOGOFILTER
+
+bogo_router:
+   domains = +local_domains
+   no_verify
+   condition = ${if !eq {$received_protocol}{spam-scanned} {1}{0}}
+   driver = accept
+   transport = bogo_transport
+
+.endif

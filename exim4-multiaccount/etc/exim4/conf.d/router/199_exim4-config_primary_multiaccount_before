@@ -1,0 +1,3 @@
+# If MULTIACCOUNT is not set, behaviour as default, if set, activate the route multiuser-multiaccount
+.ifndef MULTIACCOUNT
+

@@ -1,26 +1,23 @@
 ## Erweiterung von Jakobus Schürz für multismarthost and multiaccounts
+# 
 
 plain:
   driver = plaintext
   public_name = PLAIN
   client_send = "^${extract{-2}{::}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}\
                  ^${extract{-1}{::}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}"
-  client_condition = ${if and{{!eq{$tls_out_cipher}{}}\
-                     {eq{${extract{1}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}{$auth2}{}}}}}
 
 login:
   driver = plaintext
   public_name = LOGIN
-  client_send = ": ${extract{-2}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}} \
-                 : ${extract{-1}{::}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}"
-  client_condition = ${if and{{!eq{$tls_out_cipher}{}}\
-                     {eq{${extract{1}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}{$auth2}{}}}}}
+  client_send = ": ${extract{-2}{::}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}} \
+                 : ${extract{-1}{::}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}"
 
 cram_md5:
   driver = cram_md5
   public_name = CRAM-MD5
-  client_name = ${extract{-2}{:}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}
-  client_secret = ${extract{-1}{:}{${lookup{$sender_address}lsearch{CONFDIR/sender.multismarthost_multiaccount.passwd}{$value}fail}}}
+  client_name = ${extract{-2}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
+  client_secret = ${extract{-1}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
 
 
 

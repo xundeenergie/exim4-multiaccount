@@ -1,0 +1,10 @@
+# Macro defining the main configuration directory.
+# We do not use absolute paths.
+.ifndef CREDDIR
+CREDDIR = CONFDIR/credentials
+.endif
+
+# Use Multiaccount-Routers and transports, set MULTIACCOUNT
+MULTIACCOUNT = true
+
+

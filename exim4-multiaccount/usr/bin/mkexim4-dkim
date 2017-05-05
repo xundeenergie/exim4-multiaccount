@@ -1,0 +1,19 @@
+#!/bin/sh
+
+EXIMCONFDIR="/etc/exim4/dkim"
+DOMAIN="$1"
+TS=$(date  +"%Y%m%d")
+
+[ -e "$EXIMCONFDIR" ] || mkdir -p "${EXIMCONFDIR}"
+openssl genrsa -out "${EXIMCONFDIR}/${TS}.${DOMAIN}.priv" 1024 -outform PEM
+openssl rsa -in "${EXIMCONFDIR}/${TS}.${DOMAIN}.priv" -out "${EXIMCONFDIR}/${TS}.${DOMAIN}.pub" -pubout -outform PEM
+ln -sf "${EXIMCONFDIR}/${TS}.${DOMAIN}.priv" "${EXIMCONFDIR}/${DOMAIN}.priv"
+ln -sf "${EXIMCONFDIR}/${TS}.${DOMAIN}.pub" "${EXIMCONFDIR}/${DOMAIN}.pub"
+
+echo "
+
+Put this in your DNS:"
+
+echo "${DOMAIN%%.*}._domainkey.${DOMAIN} IN TXT"
+echo -n "v=DKIM1; k=rsa; p="
+sed -e '1d;$d' "${EXIMCONFDIR}/${DOMAIN}.pub"|sed -e ':a;N;s/\n//;ta'
