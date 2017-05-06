@@ -7,4 +7,10 @@ CREDDIR = CONFDIR/credentials
 # Use Multiaccount-Routers and transports, set MULTIACCOUNT
 MULTIACCOUNT = true
 
+.ifdef MULTIACCOUNT
+# If MULTIACCOUNT is definded, set MAIN_ACL_CHECK_MAIL to use a special ACL for
+# Connections on ports other than 25
 
+MAIN_ACL_CHECK_MAIL = ${if ={25}{$interface_port} \
+                     {acl_check_mail} {acl_check_mail_multiaccount} }
+.endif

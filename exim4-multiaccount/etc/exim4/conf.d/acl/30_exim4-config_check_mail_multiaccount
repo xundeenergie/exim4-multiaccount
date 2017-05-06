@@ -1,21 +1,19 @@
-
-### acl/30_exim4-config_check_mail
-#################################
-
-# This access control list is used for every MAIL command in an incoming
-# SMTP message. The tests are run in order until the address is either
-# accepted or denied.
-#
-#acl_check_mail:
+# conf.d/acl/30_exim-config_check_mail_multiaccount
+########################################################################
+##  ACL for use with Multiaccounts on Multiple Smarthosts             ##
+##  ACL reject Emails with not allowed from for $authenticated_id     ##
+########################################################################
+acl_check_mail_multiaccount:
 
   deny
-    authenticated = *
+    !authenticated = *
     !condition = ${if eq {$interface_port}{587}{true}}
     #hosts = :
     message = Authentication requires before MAIL command $interface_port
 
 
   accept
+    authenticated = *
     message = User $authenticated_id is not in allowed to send with $sender_address as from-envelope ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
     condition = ${if forany{<, ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}}\
                    {match{$item}{$authenticated_id}}{yes}{no}}
@@ -29,4 +27,3 @@
 #                    {$authenticated_id} \
 #                    {${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}} \
 #                    }
-  #accept
