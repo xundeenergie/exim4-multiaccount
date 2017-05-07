@@ -1,1 +1,1 @@
-from.sender@email.tld:smtp.server:user.name:verysecretpassword
+#from.sender@email.tld:commaseparated,list,of,loginusers:smtp.server:portnumber(integer):user.name:verysecretpassword

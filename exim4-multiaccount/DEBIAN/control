@@ -1,13 +1,13 @@
 Package: exim4-multiaccount
-Version: 0.1.24
+Version: 0.1.27
 Section: mail
 Priority: extra
 Architecture: all
 Maintainer: Jakobus Schürz <xundeenergie@gmail.com>
 Homepage: http://github.com/xundeenergie/exim4-multiaccount
 Provides: exim4-multiaccount
-Depends: exim4
-Recommends: bogofilter
+Depends: exim4-daemon-heavy
+Recommends: 
 Description: Additional config-files for exim4 
  This package handles multiple mail-accounts for multiple mailservers depending on the sender-address
 

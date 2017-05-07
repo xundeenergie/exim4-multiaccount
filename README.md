@@ -10,8 +10,10 @@ Diese Konfiguration erweitert die Möglichkeiten von exim4, dass mehrere User au
 
 ## Installation
 * Dateien in die entsprechenden Verzeichnisse kopieren.
-* in /etc/exim4/sender.multismarthost_multiaccount.passwd mit Doppelpunkt getrennt die Daten eintragen.
-	absender.email@domain.tld:smtp.server.tld:login.name@domain.tld:verysecretpassword
+* /etc/exim4/client.multismarthost_multiaccount.passwd.example als Vorlage verwenden und das .example am Ende des Dateinamens entfernen
+* in /etc/exim4/client.multismarthost_multiaccount.passwd mit Doppelpunkt getrennt die Daten eintragen.
+	absender.email@domain.tld:commaseparated,list,of,loginusers:smtp.server.tld:Portnummer:login.name@domain.tld:verysecretpassword
+* im zweiten Feld muss eine kommaseparierte Liste der smtp-user angegeben werden, welche diese Absenderadresse verwenden dürfen. Normalerweise wird nur ein Username eingetragen sein.
 * sudo systemctl restart exim4.service 
 * /etc/email-addresses ergänzen
 * ~~/etc/exim4/conf.d/auth/30_exim4-config_examples - zur Gänze auskommentieren ~~

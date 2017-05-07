@@ -1,5 +1,0 @@
-DKIM_DOMAIN = ${lc:${domain:$h_from:}}
-DKIM_FILE = /etc/exim4/dkim/${lc:${domain:$h_from:}}.priv
-DKIM_PRIVATE_KEY = ${if exists{DKIM_FILE}{DKIM_FILE}{0}}
-DKIM_SELECTOR = ${extract{-2}{.}{DKIM_DOMAIN}}
-DKIM_CANON = relaxed
