@@ -1,5 +1,5 @@
 Package: exim4-multiaccount
-Version: 0.1.27
+Version: 0.1.28
 Section: mail
 Priority: extra
 Architecture: all

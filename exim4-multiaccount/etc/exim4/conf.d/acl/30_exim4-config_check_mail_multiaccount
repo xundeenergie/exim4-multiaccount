@@ -6,17 +6,25 @@
 acl_check_mail_multiaccount:
 
   deny
-    !authenticated = *
-    !condition = ${if eq {$interface_port}{587}{true}}
-    #hosts = :
-    message = Authentication requires before MAIL command $interface_port
+    condition = ${if eq {$interface_port}{587}{true}}
+    !encrypted = *
+    message = Encrypted Connection required on $interface_port
 
+  deny
+    !authenticated = *
+    message = Authentication requires before MAIL command on port $interface_port
+
+
+  deny
+    !condition = ${if forany{<, ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}}\
+                   {match{$item}{$authenticated_id}}{yes}{no}}
+    message = User $authenticated_id is not in allowed to send with $sender_address as from-envelope 
 
   accept
-    authenticated = *
-    message = User $authenticated_id is not in allowed to send with $sender_address as from-envelope ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
-    condition = ${if forany{<, ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}}\
-                   {match{$item}{$authenticated_id}}{yes}{no}}
+#    #authenticated = 
+#    #message = User $authenticated_id is not in allowed to send with $sender_address as from-envelope 
+#    condition = ${if forany{<, ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}}\
+#                   {match{$item}{$authenticated_id}}{yes}{no}}
    
 #  accept
 #    hosts = :
