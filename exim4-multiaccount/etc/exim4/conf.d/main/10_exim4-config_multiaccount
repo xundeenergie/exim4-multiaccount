@@ -1,0 +1,10 @@
+# #################################################### #
+# /etc/exim4/conf.d/main/10_exim4-config_multiaccount  #
+# #################################################### #
+
+# If MULTIACCOUNT is definded, set MAIN_ACL_CHECK_MAIL to use a special ACL for
+# Connections on ports other than 25
+.ifdef MULTIACCOUNT
+MAIN_ACL_CHECK_MAIL = ${if ={25}{$interface_port} \
+                     {acl_check_mail} {acl_check_mail_multiaccount} }
+.endif

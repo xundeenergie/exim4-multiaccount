@@ -8,30 +8,20 @@ acl_check_mail_multiaccount:
   deny
     condition = ${if eq {$interface_port}{587}{true}}
     !encrypted = *
-    message = Encrypted Connection required on $interface_port
+    message = Encrypted Connection required on port $interface_port
 
   deny
     !authenticated = *
     message = Authentication requires before MAIL command on port $interface_port
 
-
   deny
-    !condition = ${if forany{<, ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}}\
+    # At this point, the sender_address is not rewritten. So $sender_addres_local_part@localhost gets rejected
+    # So rewrite it for the check.
+    set acl_m_f = ${lookup{${sender_address_local_part}}lsearch{/etc/email-addresses}\
+                   {$value}fail}
+    !condition = ${if forany{<, ${extract{1}{:}{${lookup{$acl_m_f}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}}\
                    {match{$item}{$authenticated_id}}{yes}{no}}
-    message = User $authenticated_id is not in allowed to send with $sender_address as from-envelope 
+    message = User $authenticated_id is not in allowed to send with $acl_m_f($sender_address) as from-envelope
 
   accept
-#    #authenticated = 
-#    #message = User $authenticated_id is not in allowed to send with $sender_address as from-envelope 
-#    condition = ${if forany{<, ${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}}\
-#                   {match{$item}{$authenticated_id}}{yes}{no}}
-   
-#  accept
-#    hosts = :
-#    domains = +local_domains
-#    control = dkim_disable_verify
-
-#    condition = ${if eq \
-#                    {$authenticated_id} \
-#                    {${extract{1}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}} \
-#                    }
+    # If not denied, accept the mail
