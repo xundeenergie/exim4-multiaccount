@@ -4,3 +4,7 @@
 
 # Use Multiaccount-Routers and transports, set MULTIACCOUNT
 MULTIACCOUNT = true
+
+# Redirect a copy of every sent email to the imap-server
+LOCAL_SENT_COPY = true
+

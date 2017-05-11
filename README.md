@@ -51,3 +51,20 @@ In Betrieb genommen kann bogofilter mit dem hier mitgelieferten Router und Trans
 
 gesetzt wird. Deaktiviert wird bogofilter durch löschen oder auskommentieren des Makros USE_BOGOFILTER.
 
+## Lokale Kopie der gesendeten Emails
+Damit von jedem gesendeten Email (egal über welchen Client) eine Kopie im "Gesendet"-Ordner am Imap-Server gespeichert wird, ist das Makro zu setzen
+    
+    LOCAL_SENT_COPY = true
+
+Damit wird der Router "local_user_copy" aktiviert.
+Dieser Router fügt automatisch eine Header-Zeile "X-Local-Sent-Copy: true" ein und redirected das Mail an den authentifizierten SMTP/IMAP-User.
+
+Damit dieses Mail auch tatsächlich in den Gesendet-Ordner kommt, muss im Imap-Server auf diese Headerzeile gefiltert werden.
+
+Für Sieve aus dovecot könnte diese Regel so aussehen (so soweit wie möglich am Beginn, am besten als allererste Regel stehen):
+
+    if header :contains "X-Local-Sent-Copy" "true"
+    {fileinto "INBOX/Sent"; setflag "\\seen"; addflag "$label3"; stop;}
+
+Diese Regel setzt gleichzeitig das gesehen-Flag und das Label3 (persönlich) für Thunderbird. Diese beiden Direktiven funktionieren hier aber noch nicht korrekt. (Debugging ist notwendig!!!)
+
