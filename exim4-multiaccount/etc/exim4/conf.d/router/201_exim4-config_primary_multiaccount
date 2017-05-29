@@ -82,7 +82,7 @@ nonlocal:
 # This is the variant with multiaccounts
 #
 smarthost_multiaccount:
-  debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address
+  debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address"
   driver = manualroute
   domains = !+local_domains
   transport = remote_smtp_smarthost_multiaccount
