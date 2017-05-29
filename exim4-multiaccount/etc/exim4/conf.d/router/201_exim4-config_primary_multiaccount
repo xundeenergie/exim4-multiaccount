@@ -82,11 +82,11 @@ nonlocal:
 # This is the variant with multiaccounts
 #
 smarthost_multiaccount:
-  debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address"
+  debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address
   driver = manualroute
   domains = !+local_domains
   transport = remote_smtp_smarthost_multiaccount
-  route_list = * ${extract{-4}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
+  route_list = * "${extract{-4}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}::${if eq{${extract{-3}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}} {} {25} {${extract{-3}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}} }"
   host_find_failed = ignore 
   same_domain_copy_routing = yes
   self = send
