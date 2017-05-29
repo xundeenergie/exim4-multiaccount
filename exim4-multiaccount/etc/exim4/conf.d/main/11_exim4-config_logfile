@@ -1,0 +1,3 @@
+.ifdef LOG_FILE_PATH
+log_file_path = LOG_FILE_PATH
+.endif
