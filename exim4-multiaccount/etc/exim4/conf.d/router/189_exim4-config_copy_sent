@@ -1,0 +1,23 @@
+
+### router/110_exim4-config_copy_sent
+#################################
+
+# This router matches local user mailboxes. If the router fails, the error
+# message is "Unknown user".
+
+.ifdef LOCAL_SENT_COPY
+local_user_copy:
+  debug_print = "R: copy sent emails to local_user for $local_part@$domain"
+  driver = redirect
+  headers_add = X-Local-Sent-Copy: true
+#  domains = +local_domains
+#  check_local_user
+# local_part_suffix = +* : -*
+# local_part_suffix_optional
+#  local_parts = ! root
+#  transport = LOCAL_DELIVERY
+  repeat_use = False
+  data = $authenticated_id
+  cannot_route_message = Unknown user
+  unseen
+.endif
