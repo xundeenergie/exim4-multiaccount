@@ -1,4 +1,4 @@
-/etc/exim4/conf.d/router/199_exim4-config_primary_multiaccount_before
+/etc/exim4/conf.d/router/198_exim4-config_primary_multiaccount_before
 /etc/exim4/conf.d/router/201_exim4-config_primary_multiaccount
 /etc/exim4/conf.d/transport/30_exim4-config_remote_smtp_smarthost_multiaccount
 /etc/exim4/conf.d/auth/20_exim4-config_authenticates_multiaccount

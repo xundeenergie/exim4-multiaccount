@@ -1,3 +1,4 @@
+#################################
 ### router/200_exim4-config_primary
 #################################
 # This file holds the primary router, responsible for nonlocal mails
@@ -81,6 +82,7 @@ nonlocal:
 #
 # This is the variant with multiaccounts
 #
+
 smarthost_multiaccount:
   debug_print = "R: smarthost multiaccount for $local_part@$domain and $sender_address"
   driver = manualroute
@@ -89,13 +91,14 @@ smarthost_multiaccount:
   route_list = * "${extract{-4}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}::${if eq{${extract{-3}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}} {} {25} {${extract{-3}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}} }"
   host_find_failed = ignore 
   same_domain_copy_routing = yes
+#  headers_add = X-Local-Archive-Sent: true
   self = send
   condition = ${if !eq{${lc:$local_part}}{Debian-exim}{1}{1}}
   condition = ${if !eq{${lc:$local_part}}{postmaster}{1}{1}}
   condition = ${if !eq{${lc:$local_part}}{root}{1}{1}}
   no_more
-.endif
 
+.endif
 
 # The "no_more" above means that all later routers are for
 # domains in the local_domains list, i.e. just like Exim 3 directors.

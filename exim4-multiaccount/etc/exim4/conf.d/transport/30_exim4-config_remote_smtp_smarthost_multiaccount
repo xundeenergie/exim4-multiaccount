@@ -1,7 +1,7 @@
+#################################
+## /etc/exim4/conf.d/transport/30_exim-config_remote_smtp_smarthost_multiaccount
+#################################
 ## Erweiterter Transport für Zustellung zu smarthosts, wenn auf dem selben Smarthost mehrere Mailaccounts und Aliases bestehen
-# Erweiterung von Jakobus Schürz
-#hosts_require_auth = *
-#hosts_require_tls = *
 
 remote_smtp_smarthost_multiaccount:
   debug_print = "T: remote_smtp_list for $local_part@$domain an $sender_address"
