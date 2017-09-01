@@ -1,11 +1,8 @@
 #################################
-### router/200_exim4-config_primary
+### router/202_exim4-config_primary_multiaccount
 #################################
 # This file holds the primary router, responsible for nonlocal mails
 
-## Erweiterung von Jakobus Schürz für multismarthost and multiaccounts
-
-.else
 
 # this part is the same as router/200_exim-config_primary, only the 
 # router smarthost ist changed to router smarthost_multiaccount
@@ -91,17 +88,19 @@ smarthost_multiaccount:
   route_list = * "${extract{-4}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}::${if eq{${extract{-3}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}} {} {25} {${extract{-3}{:}{${lookup{$sender_address}wildlsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}} }"
   host_find_failed = ignore 
   same_domain_copy_routing = yes
-#  headers_add = X-Local-Archive-Sent: true
-  self = send
+  #self = send
+  .ifdef  ARCHIVE_SENT
+    self = pass
+  .else
+    self = send
+    no_more
+  .endif
   condition = ${if !eq{${lc:$local_part}}{Debian-exim}{1}{1}}
   condition = ${if !eq{${lc:$local_part}}{postmaster}{1}{1}}
   condition = ${if !eq{${lc:$local_part}}{root}{1}{1}}
-  no_more
 
 .endif
 
 # The "no_more" above means that all later routers are for
 # domains in the local_domains list, i.e. just like Exim 3 directors.
 
-# End if from router/199_exim4-config_primary_multiaccount_before
-.endif

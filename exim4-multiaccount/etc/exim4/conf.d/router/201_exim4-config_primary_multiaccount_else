@@ -1,0 +1,9 @@
+#################################
+### router/200_exim4-config_primary
+#################################
+# This file holds the primary router, responsible for nonlocal mails
+
+## Erweiterung von Jakobus Schürz für multismarthost and multiaccounts
+
+.else
+
