@@ -7,7 +7,9 @@ acl_check_mail_multiaccount:
 
   deny
     message = Encrypted Connection required on port $interface_port
-    condition = ${if eq {$interface_port}{587}{true}}
+    #condition = ${if eq {$interface_port}{25}{true}}
+    #condition = ${if eq {$interface_port}{587}{true}}
+    condition = ${if or {{eq {$interface_port}{25}}{eq {$interface_port}{587}}}{true}}
     !encrypted = *
 
   deny

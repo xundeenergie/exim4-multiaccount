@@ -4,11 +4,15 @@
 ## Erweiterter Transport für Zustellung zu smarthosts, wenn auf dem selben Smarthost mehrere Mailaccounts und Aliases bestehen
 
 remote_smtp_smarthost_multiaccount:
-  debug_print = "T: remote_smtp_list for $local_part@$domain an $sender_address"
+  #debug_print = "T: remote_smtp_list for $local_part@$domain an $sender_address"
   driver = smtp
-  hosts_try_auth = ${extract{-4}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
-#  hosts_require_auth = ${extract{-4}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
-
+  .ifndef SEND_AUTHENTICATED_REQUIRED
+    debug_print = "T: remote_smtp_list for $local_part@$domain tried authenticated to $sender_address"
+    hosts_try_auth = ${extract{-4}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
+  .else
+    debug_print = "T: remote_smtp_list for $local_part@$domain authentication required to $sender_address"
+    hosts_require_auth = ${extract{-4}{:}{${lookup{$sender_address}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}
+  .endif
   
 .ifdef REMOTE_SMTP_HOSTS_AVOID_TLS
   hosts_avoid_tls = REMOTE_SMTP_HOSTS_AVOID_TLS
