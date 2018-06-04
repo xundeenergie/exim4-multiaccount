@@ -24,6 +24,8 @@ acl_check_mail_multiaccount:
                    {$value}{$sender_address}}
     !condition = ${if forany{<, ${extract{1}{:}{${lookup{$acl_m_f}lsearch{CONFDIR/client.multismarthost_multiaccount.passwd}{$value}fail}}}}\
                         {match{$item}{$authenticated_id}}{yes}{no}}
+
+  deny message = Sender not from local domain
     !condition = ${if match_domain{$sender_address_domain}{+local_domains}}
     !condition = ${if eq{$sender_address_local_part}{$authenticated_id}}
 
